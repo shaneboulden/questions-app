@@ -1,27 +1,3 @@
-# redhat-cyberark-app
-
-This app is designed to showcase the Red Hat/CyberArk partnership, and was used during a DevSecOps webinar. The app is based on the [Patternfly React Seed](https://github.com/patternfly/patternfly-react-seed)
-
-## Development environment
-
-Create a PostgreSQL database on OpenShift, and setup the `project-anvil-api` API and verify it returns results. 
-
-```
-oc new-app quay.io/smileyfritz/anvil-api:v0.1.3
-```
-Create a CNAME record in Route53 for `cybr-demo.blueradish.net` and using the hostname OpenShift routers.
-
-We're using Node Version Manager (NVM) to manage node environments on Fedora:
-```sh
-curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash  
-source ~/.bashrc
-nvm install v14.15.1
-```
-Install dependencies and start the application:
-```sh
-npm install && npm run start:dev
-```
-
 ## Building a container and deploying to OpenShift
 
 Build the app:
@@ -31,12 +7,12 @@ npm run build
 
 Build the container with podman:
 ```
-podman build -t quay.io/smileyfritz/cybr-demo:v1.2 .
+podman build -t quay.io/smileyfritz/questions-app:v0.1.1 .
 ```
 Push and deploy:
 ```
-oc new-app quay.io/smileyfritz/cybr-demo:v1.2
-oc expose svc/anvil-app
+oc new-app quay.io/smileyfritz/questions-app:v0.1.1
+oc expose svc/questions-app
 ```
 
 ## Development Scripts
