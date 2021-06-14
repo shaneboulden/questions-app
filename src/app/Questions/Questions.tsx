@@ -24,6 +24,7 @@ import {
   Grid,
   GridItem,
   PageSection,
+  Switch,
   Text,
   TextArea,
   Title
@@ -39,13 +40,28 @@ const Questions: React.FunctionComponent = () => {
   const [ isDrawerExpanded, setDrawerExpanded ] = React.useState(false);
   const [ text, setText ] = React.useState("")
   const [ questions, setQuestions ] = React.useState([]);
+  const [ dataEnc, setDataEnc ] = React.useState(false);
 
-  React.useEffect(() => {
-    axios.get("http://questions-api.blueradish.net/api/questions")
-    .then(res => {
+  //React.useEffect(() => {
+    //questions-api.blueradish.net/api/questions/clear
+  //  axios.get("http://localhost:8080/api/questions/clear")
+  //  .then(res => {
+  //    setQuestions(res.data);
+  //  });
+  //});
+
+  const handleToggleChange = () => {
+    let url = "";
+    if(dataEnc) {
+      url = "http://questions-api.blueradish.net/api/questions/clear";
+    } else {
+      url = "http://questions-api.blueradish.net/api/questions/"
+    }
+    axios.get(url).then(res => {
       setQuestions(res.data);
     });
-  });
+    setDataEnc(!dataEnc);
+  };
 
   const onCloseDrawerClick = () => {
         setDrawerExpanded(false);
@@ -59,10 +75,17 @@ const Questions: React.FunctionComponent = () => {
     setText(text);
   }
 
+  const cardStyle = {
+    minWidth: "20%",
+    minHeight: "10em",
+    flexGrow: 0
+  };
+
   const handleSubmitClick = () => {
     // make a post to the api to raise a question with the value
     const adapter = axios.create({
-        baseURL: 'http://questions-api.blueradish.net/api',
+      //questions-api.blueradish.net
+      baseURL: 'http://questions-api.blueradish.net/api',
         headers: {
             'Content-Type': 'application/json',
           }
@@ -93,12 +116,12 @@ const Questions: React.FunctionComponent = () => {
         {questions.map((question, index) => (
           <GalleryItem>
           <Card
-            style={{minHeight: '10em'}}
+            style={cardStyle}
             isHoverable
             key={index}
             id={'card-view-'+index}
           >
-          <CardBody>{question.question}</CardBody>
+          <CardBody><Text style={{ flexShrink: 1 }}>{question.question}</Text></CardBody>
           </Card>
           </GalleryItem>
       ))}
@@ -108,6 +131,13 @@ const Questions: React.FunctionComponent = () => {
 
   const drawerContent = (
     <React.Fragment>
+      <Switch 
+        id="simple-switch"
+        label="Encrypted"
+        labelOff="Not Encrypted"
+        isChecked={dataEnc}
+        onChange={handleToggleChange}
+      />
       <EmptyState>
         <img src={RedHatLogo} style={{ height: '95px' }}/>
         <Title headingLevel="h4" size="lg">
