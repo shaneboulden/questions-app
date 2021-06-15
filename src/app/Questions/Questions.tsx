@@ -78,8 +78,12 @@ const Questions: React.FunctionComponent = () => {
   const cardStyle = {
     minWidth: "20%",
     minHeight: "10em",
-    flexGrow: 0
   };
+
+  const textStyle = {
+    flexWrap: 'wrap',
+    wordWrap: 'break-word'
+  }
 
   const handleSubmitClick = () => {
     // make a post to the api to raise a question with the value
@@ -121,7 +125,7 @@ const Questions: React.FunctionComponent = () => {
             key={index}
             id={'card-view-'+index}
           >
-          <CardBody><Text style={{ flexShrink: 1 }}>{question.question}</Text></CardBody>
+            <CardBody style={cardStyle}><Text style={textStyle}>{question.question}</Text></CardBody>
           </Card>
           </GalleryItem>
       ))}
